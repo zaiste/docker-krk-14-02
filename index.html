@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>DevOps Meetup #3 - Docker</title>
+
+    <meta name="description" content="DevOps Meetup #3 - Docker">
+    <meta name="author" content="Zaiste">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/zaiste.css" id="theme">
+    
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <div class="slides">
+        <section>
+          <img src="img/docker-logo.png"/>
+        </section>
+
+        <section>
+          <h2>Communication between Docker containers</h2>
+          <p>Kraków DevOps Meetup #3 - Docker</p>
+          <small>February 26, 2014</small>
+          <hr/>
+          <small><a href='http://twitter.com/zaiste'>@zaiste</a></small>
+        </section>
+        
+        <section>
+          <h2>Programmer</h2>
+          <h4>Started <a href="http://nukomeet.com">Nukomeet</a> / Organize tech events</h4>
+        </section>
+        
+        <section>
+          <img src="img/prelude.png"/>
+        </section>
+
+        <section class="title" data-background="#009DC9">
+          <h1>Context</h1>
+        </section>
+
+        <section>
+          <p>open-source abstraction that <strong>automates</strong> the deployment of any application as a <u>lightweight</u>, <u>portable</u>, <u>self-sufficient</u> <strong>container</strong> that will run everywhere</p>
+        </section>
+
+        <section>
+          <h2>Container</h2>
+          <h4>Single Responsibility: Small &amp; Single Process</h4>
+        </section>
+
+        <section>
+          <h2>Approach</h2>
+          <h4>Throw-Away</h4>
+        </section>
+
+        <section>
+          <h2>Ephemeral nature</h2>
+        </section>
+
+        <section>
+          <h2>Persistence needs</h2>
+        </section>
+
+        <section class="title" data-background="#009DC9">
+          <h2>Data-Only Containers</h2>
+        </section>
+
+        <section>
+          <h2>Volume</h2>
+          <h4>Outside Container FS</h4>
+        </section>
+
+        <section>
+          <h2>Features</h2>
+          <h4>Share &amp; Persist Data</h4>
+        </section>
+        
+        <section>
+          <h2>Example 1</h2>
+          <h4>Static Website Generation Pipeline </h4>
+        </section>
+
+        <section>
+          <img src="img/data-only.png"/>
+        </section>
+        
+        <section>
+          <pre><code>
+ docker run -name nukomeet-com-data \
+	-v /srv/www/nukomeet.com:/data ubuntu true
+		  </code></pre>
+          <pre><code>
+ docker run -volumes-from nukomeet-com-data 
+	git-clone https://github.com/nukomeet/nukomeet.com.git
+		  </code></pre>
+          <pre><code>
+ docker run -volumes-from nukomeet-com-data nanoc-compile
+		  </code></pre>
+        </section>
+        
+        <section>
+          <script type="text/javascript" src="https://asciinema.org/a/7900.js" id="asciicast-7900" async data-speed="2" ></script>
+        </section>
+        
+        <section>
+          <h2>Simple to share state</h2>
+          <h4>Queue analogy</h4>
+        </section>
+        
+        <section>
+          <h2>Easy to upgrade</h2>
+          <h4>Process decoupled from data</h4>
+        </section>
+        
+        <section class="title" data-background="#009DC9">
+          <h2>Linking Containers</h2>
+        </section>
+        
+        <section>
+          <h2>Service discovery</h2>
+          <h4>Look up &amp; Hook in</h4>
+        </section>
+        
+        <section>
+          <h2>Parent / Child relation</h2>
+          <h4>Access to selected information</h4>
+        </section>
+        
+        <section>
+          <h2>Example 2</h2>
+          <h4>Web application</h4>
+        </section>
+        
+        <section>
+          <img src="img/link.png"/>
+        </section>
+        
+        <section>
+          <pre><code>
+ docker run -d -name mongodb zaiste/mongodb
+		  </code></pre>
+          <pre><code>
+ docker run -t -i -link mongodb:db -name webapp ubuntu bash
+		  </code></pre>
+        </section>
+        
+        <section>
+          <script type="text/javascript" src="https://asciinema.org/a/7911.js" id="asciicast-7911" async data-speed="2" ></script>
+        </section>
+        
+        <section>
+          <img src="img/prelude.png"/>
+        </section>
+
+        <section>
+          <h2>More</h2>
+          <p>
+            <a href='http://www.docker.io/'>Website</a> /
+            <a href='https://github.com/dotcloud/docker'>GitHub</a> /
+            <a href='https://groups.google.com/forum/#!forum/docker-user'>Google Group</a> /
+            IRC #docker
+          </p>
+        </section>
+
+        <section>
+          <h2>Q? / Thank you</h2>
+        </section>
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
